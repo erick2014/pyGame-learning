@@ -8,36 +8,44 @@ tanks = {
         }
 
 aliveTanks=len(tanks)
-secondName=""
-result=""
 
 while aliveTanks > 1:
 
   #validate the victims
-  try :
-    print "################################"
-    #get the shooter
-    first=raw_input("Who fires? ").lower()
-    first=tanks[first]
+  print "################################"
+  ##order the tanks and prit them out
+  for myTank in sorted( tanks.keys() ):
+    print myTank,tanks[myTank]
 
-    #get the victim
-    second=raw_input("Who at? ").lower()
-    secondName=second
-    second=tanks[second]
+  #get the shooter
+  first=raw_input("Who fires? ").lower()
+  second=raw_input("Who at? ").lower()
+
+  try:
+    firstTank=tanks[first]
+    secondTank=tanks[second]
 
   except KeyError,name:
-    print "The enemy doesnt exists or is dead",name
+    print "No such tank!",name
     continue
 
-  #shoot
-  result=first.fire_at(second)
+  #check if the first or the second one are alive
+  if not firstTank.alive or not secondTank.alive:
+    print "One of those tank is dead!"
+    continue
 
-  if ( result == "dead" ):
+  print
+  print "*"*30
+  firstTank.fire_at(secondTank)
+
+  ##check if the victim is dead
+  if not secondTank.alive:
     aliveTanks-=1
-    #remove the victim who dies
-    del tanks[secondName]
 
-print "Who wins the fight?",tanks.keys()
-print "Congratz nigga!"
+  print "*"*30
 
+#loop through the tanks to check who was the winner
+for tank in tanks.keys():
+  if tanks[tank].alive :
+    print tank," was the winner!"
 
